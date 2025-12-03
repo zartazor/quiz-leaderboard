@@ -229,6 +229,12 @@ body {
     color: #ffffff;
 }
 
+.participant-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .participant-score {
     font-size: 24px;
     font-weight: 700;
@@ -237,6 +243,67 @@ body {
     padding: 8px 20px;
     border-radius: 20px;
     border: 2px solid #4a90e2;
+}
+
+.btn-edit,
+.btn-save,
+.btn-cancel {
+    background: transparent;
+    border: 2px solid #4a90e2;
+    color: #4a90e2;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-edit:hover {
+    background: #4a90e2;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-save {
+    border-color: #2ecc71;
+    color: #2ecc71;
+}
+
+.btn-save:hover {
+    background: #2ecc71;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.btn-cancel:hover {
+    background: #e74c3c;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.edit-score-input {
+    width: 100px;
+    padding: 8px 12px;
+    border: 2px solid #4a90e2;
+    background: #1e1e2e;
+    color: #e0e0e0;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.edit-score-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
 }
 
 .empty-state {

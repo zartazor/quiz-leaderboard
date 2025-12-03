@@ -100,12 +100,20 @@ function renderHostView() {
     }
 
     participantsList.innerHTML = participants.map((participant, index) => `
-        <div class="participant-item">
+        <div class="participant-item" data-index="${index}">
             <div class="participant-info">
                 <div class="participant-rank">#${index + 1}</div>
                 <div class="participant-name">${escapeHtml(participant.name)}</div>
             </div>
-            <div class="participant-score">${participant.score}</div>
+            <div class="participant-actions">
+                <div class="participant-score">${participant.score}</div>
+                <button class="btn-edit" onclick="editParticipantScore(${index})" title="Edit score">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
     `).join('');
 }
@@ -144,6 +152,75 @@ function loadFromLocalStorage() {
 // Sort participants by score
 function sortParticipants(participants) {
     participants.sort((a, b) => b.score - a.score);
+}
+
+// Edit participant score
+function editParticipantScore(index) {
+    const participantItem = participantsList.querySelector(`[data-index="${index}"]`);
+    const participant = participants[index];
+    const actionsDiv = participantItem.querySelector('.participant-actions');
+    
+    // Create inline edit input
+    actionsDiv.innerHTML = `
+        <input 
+            type="number" 
+            class="edit-score-input" 
+            value="${participant.score}" 
+            min="0"
+            id="edit-score-${index}"
+            autofocus>
+        <button class="btn-save" onclick="saveParticipantScore(${index})" title="Save">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </button>
+        <button class="btn-cancel" onclick="cancelEditScore()" title="Cancel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    `;
+    
+    // Focus and select the input
+    const input = document.getElementById(`edit-score-${index}`);
+    input.focus();
+    input.select();
+    
+    // Allow Enter key to save
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveParticipantScore(index);
+        } else if (e.key === 'Escape') {
+            cancelEditScore();
+        }
+    });
+}
+
+// Save edited participant score
+function saveParticipantScore(index) {
+    const input = document.getElementById(`edit-score-${index}`);
+    const newScore = parseInt(input.value);
+    
+    if (isNaN(newScore) || newScore < 0) {
+        alert('Please enter a valid score (0 or greater)');
+        return;
+    }
+    
+    // Update the score
+    participants[index].score = newScore;
+    
+    // Sort by score (highest first)
+    sortParticipants(participants);
+    
+    // Save and render
+    saveToLocalStorage(participants);
+    renderHostView();
+}
+
+// Cancel editing score
+function cancelEditScore() {
+    renderHostView();
 }
 
 // Utility function to escape HTML
