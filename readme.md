@@ -9,8 +9,11 @@ A fully offline, real-time quiz leaderboard application with a clean bar chart v
 ### 🎯 Host View
 
 - **Add/Update Participants**: Simple form to add new participants or update existing scores
+- **Edit Scores**: Click the edit button next to any participant to modify their score inline
+- **Delete Participants**: Remove individual participants with a single click
 - **Live Participant List**: View all participants sorted by score with rank indicators
 - **Smart Duplicate Handling**: Updating an existing name automatically updates the score instead of creating duplicates
+- **Custom Audience Title**: Set a custom title for the audience display (or use the default)
 - **Reset Functionality**: Clear all data with a confirmation modal to prevent accidental deletion
 - **Persistent Storage**: Data automatically saved to localStorage and persists across sessions
 
@@ -55,8 +58,6 @@ A fully offline, real-time quiz leaderboard application with a clean bar chart v
 1. **Open Host View**: Open `index.html` in your browser
 2. **Open Audience View**: Click the "Open Audience View" button to open the leaderboard in a new window/tab
 3. **Display on Projector**: Drag the audience view window to your projector or second screen, press F11 for fullscreen
-4. **Add Participants**: Use the host view form to add participants and scores
-5. **Watch Live Updates**: The audience view automatically updates as you add or modify scores
 
 ### Managing Participants
 
@@ -68,13 +69,40 @@ A fully offline, real-time quiz leaderboard application with a clean bar chart v
 
 **Update an Existing Score:**
 
-- Enter the exact same name (case-insensitive)
-- Enter the new score
-- Click "Add / Update Participant"
-- Score updates automatically without creating a duplicate
+There are two ways to update a score:
 
-**Reset Leaderboard:**
+1. **Via the form (updates by name)**:
 
+   - Enter the exact same name (case-insensitive)
+   - Enter the new score
+   - Click "Add / Update Participant"
+   - Score updates automatically without creating a duplicate
+
+2. **Inline editing (direct edit)**:
+   - Click the edit button (pencil icon) next to any participant's score
+   - Modify the score directly
+   - Press Enter or click the save button (✓)
+   - Press Escape or click cancel (✗) to discard changes
+
+**Delete a Participant:**
+
+- Click the delete button (trash icon) next to any participant
+- Confirm the deletion in the dialog
+- Participant is removed from the leaderboard
+
+**Change Audience Display Title:**
+
+## File Structure
+
+````
+quiz-leaderboard/
+├── index.html        # Host view (participant management)
+├── audience.html     # Audience view (bar chart display)
+├── host.js          # Host view logic and controls
+├── audience.js      # Audience view logic and auto-refresh
+├── styles.css       # All styling and animations
+└── readme.md        # Documentation
+```ll data is cleared from both views
 - Click the "Reset Leaderboard" button
 - Confirm in the modal dialog
 - All data is cleared from both views
@@ -88,15 +116,17 @@ A fully offline, real-time quiz leaderboard application with a clean bar chart v
 
 ## File Structure
 
-```
+````
+
 quiz-leaderboard/
-├── index.html        # Host view (participant management)
-├── audience.html     # Audience view (bar chart display)
-├── host.js          # Host view logic and controls
-├── audience.js      # Audience view logic and auto-refresh
-├── styles.css       # All styling and animations
-└── readme.md        # This file
-```
+├── index.html # Host view (participant management)
+├── audience.html # Audience view (bar chart display)
+├── host.js # Host view logic and controls
+├── audience.js # Audience view logic and auto-refresh
+├── styles.css # All styling and animations
+└── readme.md # This file
+
+````
 
 ## Customization
 
@@ -123,7 +153,7 @@ In `audience.js`, modify the interval:
 
 ```javascript
 setInterval(loadAndRender, 2000); // Change 2000 to desired milliseconds
-```
+````
 
 ## Browser Support
 

@@ -1,14 +1,9 @@
 // State management
 let participants = [];
-let isRevealing = false;
-let revealIndex = 0;
-let revealInterval = null;
-let revealCompleted = false;
 
 // DOM Elements
 const chartContainer = document.getElementById('chart-container');
 const audienceTitle = document.querySelector('.audience-title');
-const revealStatus = document.getElementById('reveal-status');
 const confettiCanvas = document.getElementById('confetti-canvas');
 const ctx = confettiCanvas.getContext('2d');
 
@@ -21,27 +16,21 @@ function init() {
     loadAndRender();
     loadAndDisplayTitle();
     setupStorageListener();
-    checkRevealTrigger();
     
     // Auto-refresh every 2 seconds to catch updates
     setInterval(loadAndRender, 2000);
     setInterval(loadAndDisplayTitle, 2000);
-    setInterval(checkRevealTrigger, 500);
 }
 
 // Load data and render
 function loadAndRender() {
     const newParticipants = loadFromLocalStorage();
     
-    // Only re-render if data has changed and not during/after reveal
+    // Only re-render if data has changed
     if (JSON.stringify(newParticipants) !== JSON.stringify(participants)) {
         participants = newParticipants;
         sortParticipants(participants);
-        
-        // Don't auto-refresh during or after reveal
-        if (!isRevealing && !revealCompleted) {
-            renderAudienceView();
-        }
+        renderAudienceView();
     }
 }
 
@@ -54,9 +43,6 @@ function setupStorageListener() {
         if (e.key === 'quizLeaderboardTitle') {
             loadAndDisplayTitle();
         }
-        if (e.key === 'revealTrigger') {
-            checkRevealTrigger();
-        }
     });
 }
 
@@ -67,31 +53,19 @@ function renderAudienceView() {
         return;
     }
 
-    // If revealing, only show up to revealIndex from the BOTTOM (reversed)
-    const displayParticipants = isRevealing 
-        ? participants.slice().reverse().slice(0, revealIndex + 1).reverse()
-        : participants;
-
     // Calculate max score for scaling
     const maxScore = Math.max(...participants.map(p => p.score));
     const minBarWidth = 10; // Minimum bar width percentage
 
-    chartContainer.innerHTML = displayParticipants.map((participant, displayIndex) => {
-        // Get the actual rank in the full leaderboard
-        const actualIndex = participants.findIndex(p => p.name === participant.name);
-        
+    chartContainer.innerHTML = participants.map((participant, index) => {
         // Calculate bar width (minimum 10%, maximum 100%)
         const barWidth = maxScore > 0 
             ? Math.max(minBarWidth, (participant.score / maxScore) * 100)
             : minBarWidth;
 
-        // Add special animation class for newly revealed items
-        const animationClass = isRevealing && displayIndex === displayParticipants.length - 1 
-            ? 'reveal-animation' : '';
-
         return `
-            <div class="chart-bar ${animationClass}">
-                <div class="bar-rank">#${actualIndex + 1}</div>
+            <div class="chart-bar">
+                <div class="bar-rank">#${index + 1}</div>
                 <div class="bar-content">
                     <div class="bar-header">
                         <div class="bar-name">${escapeHtml(participant.name)}</div>
@@ -134,94 +108,6 @@ function loadAndDisplayTitle() {
         console.error('Error loading title:', e);
         audienceTitle.textContent = 'Quiz Leaderboard';
     }
-}
-
-// Setup reveal controls
-function checkRevealTrigger() {
-    try {
-        const trigger = localStorage.getItem('revealTrigger');
-        if (trigger === 'start' && !isRevealing && !revealCompleted) {
-            revealCompleted = false;
-            localStorage.removeItem('revealTrigger'); // Clear trigger after handling
-            startDramaticReveal();
-        } else if (trigger === 'stop' && (isRevealing || !revealCompleted)) {
-            localStorage.removeItem('revealTrigger'); // Clear trigger after handling
-            showAllParticipants();
-        }
-    } catch (e) {
-        console.error('Error checking reveal trigger:', e);
-    }
-}
-
-// Start dramatic reveal from lowest to highest
-function startDramaticReveal() {
-    if (participants.length === 0) {
-        revealStatus.textContent = '⚠️ No participants to reveal';
-        return;
-    }
-
-    // Stop any existing reveal
-    stopReveal();
-
-    isRevealing = true;
-    revealIndex = 0;
-    
-    // Render first participant (lowest score)
-    renderAudienceView();
-    updateRevealStatus();
-
-    // Continue revealing every 2 seconds
-    revealInterval = setInterval(() => {
-        revealIndex++;
-        
-        if (revealIndex >= participants.length) {
-            // Reveal complete!
-            stopReveal();
-            revealCompleted = true;
-            revealStatus.innerHTML = '🎉 <strong>Congratulation</strong>';
-            launchConfetti();
-            
-            // Flash the winner (skip if first position)
-            setTimeout(() => {
-                const topBar = chartContainer.querySelector('.chart-bar:first-child');
-                if (topBar && participants.length > 1) {
-                    topBar.classList.add('winner-flash');
-                }
-            }, 500);
-        } else {
-            renderAudienceView();
-            updateRevealStatus();
-            
-            // Add sound effect simulation (visual pulse)
-            audienceTitle.classList.add('pulse');
-            setTimeout(() => audienceTitle.classList.remove('pulse'), 500);
-        }
-    }, 2000);
-}
-
-// Stop the reveal
-function stopReveal() {
-    if (revealInterval) {
-        clearInterval(revealInterval);
-        revealInterval = null;
-    }
-    isRevealing = false;
-}
-
-// Show all participants immediately
-function showAllParticipants() {
-    stopReveal();
-    revealCompleted = true;
-    revealIndex = participants.length;
-    renderAudienceView();
-    revealStatus.textContent = '';
-}
-
-// Update reveal status message
-function updateRevealStatus() {
-    const remaining = participants.length - revealIndex - 1;
-    const current = participants.length - revealIndex;
-    revealStatus.innerHTML = `🎬 Revealing <strong>#${current}</strong> of <strong>${participants.length}</strong> (${remaining} remaining...)`;
 }
 
 // Confetti system
