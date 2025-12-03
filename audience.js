@@ -3,14 +3,17 @@ let participants = [];
 
 // DOM Elements
 const chartContainer = document.getElementById('chart-container');
+const audienceTitle = document.querySelector('.audience-title');
 
 // Initialize app
 function init() {
     loadAndRender();
+    loadAndDisplayTitle();
     setupStorageListener();
     
     // Auto-refresh every 2 seconds to catch updates
     setInterval(loadAndRender, 2000);
+    setInterval(loadAndDisplayTitle, 2000);
 }
 
 // Load data and render
@@ -30,6 +33,9 @@ function setupStorageListener() {
     window.addEventListener('storage', (e) => {
         if (e.key === 'quizLeaderboard') {
             loadAndRender();
+        }
+        if (e.key === 'quizLeaderboardTitle') {
+            loadAndDisplayTitle();
         }
     });
 }
@@ -82,6 +88,20 @@ function loadFromLocalStorage() {
 // Sort participants by score
 function sortParticipants(participants) {
     participants.sort((a, b) => b.score - a.score);
+}
+
+// Load and display title
+function loadAndDisplayTitle() {
+    try {
+        const saved = localStorage.getItem('quizLeaderboardTitle');
+        const title = saved || 'Quiz Leaderboard';
+        if (audienceTitle.textContent !== title) {
+            audienceTitle.textContent = title;
+        }
+    } catch (e) {
+        console.error('Error loading title:', e);
+        audienceTitle.textContent = 'Quiz Leaderboard';
+    }
 }
 
 // Utility function to escape HTML

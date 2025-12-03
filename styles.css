@@ -88,6 +88,7 @@ body {
 }
 
 .form-card,
+.title-card,
 .participants-card {
     background: #2a2a3e;
     border-radius: 16px;
@@ -97,10 +98,51 @@ body {
 }
 
 .form-card h2,
+.title-card h2,
 .participants-card h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #ffffff;
+}
+
+.title-editor {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.title-editor input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 2px solid #3a3a4e;
+    background: #1e1e2e;
+    color: #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.title-editor input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.title-editor .btn {
+    width: auto;
+    white-space: nowrap;
+}
+
+.title-preview {
+    color: #b0b0b0;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.title-preview span {
+    color: #4a90e2;
+    font-weight: 600;
+    font-style: normal;
 }
 
 .card-header {
@@ -247,7 +289,8 @@ body {
 
 .btn-edit,
 .btn-save,
-.btn-cancel {
+.btn-cancel,
+.btn-delete {
     background: transparent;
     border: 2px solid #4a90e2;
     color: #4a90e2;
@@ -262,6 +305,17 @@ body {
 
 .btn-edit:hover {
     background: #4a90e2;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.btn-delete:hover {
+    background: #e74c3c;
     color: #ffffff;
     transform: translateY(-2px);
 }
