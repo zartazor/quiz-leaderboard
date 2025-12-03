@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Leaderboard - Host</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="host-container">
+            <div class="header-with-link">
+                <h1>Quiz Leaderboard Manager</h1>
+                <a href="audience.html" target="_blank" class="audience-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    Open Audience View
+                </a>
+            </div>
+            
+            <div class="form-card">
+                <h2>Add/Update Participant</h2>
+                <form id="participant-form">
+                    <div class="form-group">
+                        <label for="participant-name">Participant Name</label>
+                        <input 
+                            type="text" 
+                            id="participant-name" 
+                            placeholder="Enter name" 
+                            required
+                            autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="participant-score">Score</label>
+                        <input 
+                            type="number" 
+                            id="participant-score" 
+                            placeholder="Enter score" 
+                            min="0" 
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add / Update Participant</button>
+                </form>
+            </div>
+
+            <div class="participants-card">
+                <div class="card-header">
+                    <h2>Participants</h2>
+                    <button id="reset-btn" class="btn btn-danger">Reset Leaderboard</button>
+                </div>
+                <div id="participants-list" class="participants-table">
+                    <div class="empty-state">No participants yet. Add one above!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Confirm Reset</h2>
+            <p>Are you sure you want to reset the leaderboard? This will delete all participants.</p>
+            <div class="modal-actions">
+                <button id="confirm-reset" class="btn btn-danger">Yes, Reset</button>
+                <button id="cancel-reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="host.js"></script>
+</body>
+</html>
