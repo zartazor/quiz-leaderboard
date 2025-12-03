@@ -21,6 +21,16 @@
                 </a>
             </div>
             
+            <div class="participants-card">
+                <div class="card-header">
+                    <h2>Participants</h2>
+                    <button id="reset-btn" class="btn btn-danger">Reset Leaderboard</button>
+                </div>
+                <div id="participants-list" class="participants-table">
+                    <div class="empty-state">No participants yet. Add one above!</div>
+                </div>
+            </div>
+            
             <div class="form-card">
                 <h2>Add/Update Participant</h2>
                 <form id="participant-form">
@@ -59,15 +69,15 @@
                 <p class="title-preview">Current: <span id="current-title">Quiz Leaderboard</span></p>
             </div>
 
-            <div class="participants-card">
-                <div class="card-header">
-                    <h2>Participants</h2>
-                    <button id="reset-btn" class="btn btn-danger">Reset Leaderboard</button>
-                </div>
-                <div id="participants-list" class="participants-table">
-                    <div class="empty-state">No participants yet. Add one above!</div>
+            <div class="reveal-card">
+                <h2>Dramatic Reveal</h2>
+                <p class="reveal-description">Control the dramatic reveal on the audience display</p>
+                <div class="reveal-controls">
+                    <button id="start-reveal-btn" class="btn btn-reveal">🎬 Start Dramatic Reveal</button>
+                    <button id="stop-reveal-btn" class="btn btn-secondary">📊 Show All Now</button>
                 </div>
             </div>
+
         </div>
     </div>
 

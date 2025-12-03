@@ -1,5 +1,7 @@
 # Quiz Leaderboard
 
+🔗 **Live Demo:** [https://lukeleader.netlify.app/](https://lukeleader.netlify.app/)
+
 A fully offline, real-time quiz leaderboard application with a clean bar chart visualization. Perfect for classrooms, quiz competitions, presentations, and live events.
 
 ## Features

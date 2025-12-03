@@ -13,6 +13,8 @@ const cancelResetBtn = document.getElementById('cancel-reset');
 const audienceTitleInput = document.getElementById('audience-title-input');
 const updateTitleBtn = document.getElementById('update-title-btn');
 const currentTitleDisplay = document.getElementById('current-title');
+const startRevealBtnHost = document.getElementById('start-reveal-btn');
+const stopRevealBtnHost = document.getElementById('stop-reveal-btn');
 
 // Initialize app
 function init() {
@@ -63,6 +65,15 @@ function setupEventListeners() {
         if (e.key === 'Enter') {
             updateAudienceTitle();
         }
+    });
+
+    // Dramatic reveal controls
+    startRevealBtnHost.addEventListener('click', () => {
+        triggerDramaticReveal();
+    });
+
+    stopRevealBtnHost.addEventListener('click', () => {
+        stopDramaticReveal();
     });
 }
 
@@ -295,6 +306,24 @@ function getAudienceTitle() {
     } catch (e) {
         console.error('Error loading title:', e);
         return 'Quiz Leaderboard';
+    }
+}
+
+// Trigger dramatic reveal on audience page
+function triggerDramaticReveal() {
+    try {
+        localStorage.setItem('revealTrigger', 'start');
+    } catch (e) {
+        console.error('Error triggering reveal:', e);
+    }
+}
+
+// Stop dramatic reveal on audience page
+function stopDramaticReveal() {
+    try {
+        localStorage.setItem('revealTrigger', 'stop');
+    } catch (e) {
+        console.error('Error stopping reveal:', e);
     }
 }
 

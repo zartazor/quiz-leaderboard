@@ -89,6 +89,7 @@ body {
 
 .form-card,
 .title-card,
+.reveal-card,
 .participants-card {
     background: #2a2a3e;
     border-radius: 16px;
@@ -99,10 +100,37 @@ body {
 
 .form-card h2,
 .title-card h2,
+.reveal-card h2,
 .participants-card h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #ffffff;
+}
+
+.reveal-description {
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.reveal-controls {
+    display: flex;
+    gap: 12px;
+}
+
+.reveal-controls .btn {
+    flex: 1;
+}
+
+.btn-reveal {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    color: #ffffff;
+}
+
+.btn-reveal:hover {
+    background: linear-gradient(135deg, #8e44ad 0%, #7d3c98 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(155, 89, 182, 0.4);
 }
 
 .title-editor {
@@ -385,6 +413,37 @@ body {
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     letter-spacing: 2px;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.audience-title.pulse {
+    transform: scale(1.05);
+    text-shadow: 0 4px 16px rgba(74, 144, 226, 0.8);
+}
+
+.reveal-status {
+    color: #4a90e2;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding: 8px 16px;
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.3);
+    margin-bottom: 20px;
+    flex-shrink: 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reveal-status:empty {
+    display: none;
+}
+
+.reveal-status strong {
+    color: #ffffff;
 }
 
 .chart-container {
@@ -428,6 +487,47 @@ body {
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+@keyframes revealPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(30px);
+    }
+    50% {
+        transform: scale(1.05) translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes winnerFlash {
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(243, 156, 18, 0);
+        transform: scale(1);
+    }
+    25% {
+        box-shadow: 0 0 30px rgba(243, 156, 18, 0.8);
+        transform: scale(1.02);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(243, 156, 18, 1);
+        transform: scale(1.05);
+    }
+    75% {
+        box-shadow: 0 0 30px rgba(243, 156, 18, 0.8);
+        transform: scale(1.02);
+    }
+}
+
+.chart-bar.reveal-animation {
+    animation: revealPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.chart-bar.winner-flash {
+    animation: winnerFlash 2s ease-in-out 3;
 }
 
 .bar-rank {
@@ -521,6 +621,17 @@ body {
     color: #cd7f32;
 }
 
+/* Confetti Canvas */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
 /* Modal */
 .modal {
     display: none;
@@ -541,6 +652,14 @@ body {
     .audience-title {
         font-size: 28px;
         margin-bottom: 15px;
+    }
+
+    .reveal-status {
+        font-size: 14px;
+    }
+
+    .reveal-controls {
+        flex-direction: column;
     }
 
     .bar-name {
