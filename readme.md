@@ -173,3 +173,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Acknowledgments
 
 Built with ❤️ using vanilla JavaScript, HTML, and CSS - no frameworks required!
+.
